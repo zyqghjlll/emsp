@@ -20,6 +20,9 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: 🔨 Build JAR with Maven
+        run: mvn clean package -DskipTests
+
       - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
