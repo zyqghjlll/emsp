@@ -1,7 +1,8 @@
-package com.ethan.emsp.controller;
+package com.ethan.emsp.api.controller;
 
+import com.ethan.emsp.application.command.LocationCmdApplication;
 import com.ethan.emsp.application.query.LocationQueryApplication;
-import com.ethan.emsp.controller.dto.CreateLocationDto;
+import com.ethan.emsp.api.controller.dto.CreateLocationDto;
 import com.ethan.emsp.core.result.ResultMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +15,13 @@ public class LocationController {
 
     @Autowired
     private LocationQueryApplication locationApplication;
+    @Autowired
+    private LocationCmdApplication locationCommandApplication;
 
     @RequestMapping("/create")
     public ResultMessage<String> create(@RequestBody CreateLocationDto dto) {
-        throw new RuntimeException("测试异常");
+        String id = locationCommandApplication.create(dto.toCommand());
+        return ResultMessage.success(id);
     }
 
     // 更新位置

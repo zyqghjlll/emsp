@@ -1,4 +1,4 @@
-package com.ethan.emsp.controller.dto;
+package com.ethan.emsp.api.controller.dto;
 
 import lombok.Data;
 

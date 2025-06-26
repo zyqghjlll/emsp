@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <property name="project.name" value="emsp"/>
-    <property name="log" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] --- %logger{36} - %msg%n"/>
-    <property name="log.path" value="log"/>
+    <property name="log.path" value="logs"/>
     <property name="maxHistory" value="60"/>
     <property name="file.Size" value="10MB"/>
     <property name="file.totalSize" value="300MB"/>
+    <!-- 彩色控制台日志格式 -->
+    <property name="log.pattern.color"
+              value="%cyan(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%yellow(%thread)] %highlight(%-5level) %magenta(%logger{40}) [%blue(%X{TRACE_ID})] - %msg%n"/>
 
-    <property name="project.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS,CTT} [%thread] %-5level %logger{50} - %msg%n" />
-    <!-- 彩色日志格式 -->
-    <property name="log.pattern.color" value="%cyan(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%yellow(%thread)] %highlight(%-5level) %blue(%-36logger{36}) - %msg%n" />
+    <!-- 普通文件日志格式 -->
+    <property name="log.pattern.file"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [%X{TRACE_ID}] - %msg%n"/>
 
-    <contextName>${project.name}</contextName>
+    <!-- 彩色日志依赖渲染器 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
-    <!-- 彩色日志 -->
-    <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
-    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <!-- 异步控制台输出 -->
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE"/>
+    </appender>
 
-    <!--console_log-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>debug</level>
-        </filter>
         <encoder charset="UTF-8">
             <pattern>${log.pattern.color}</pattern>
         </encoder>
     </appender>
 
-    <!--info_log-->
+    <!-- INFO 日志文件 -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${log.path}/log_info.log</file>
+        <file>${log.path}/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/%d{YYYY-MM-dd}/${project.name}_info_%d{YYYY-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/info_%i.log</fileNamePattern>
             <maxFileSize>${file.Size}</maxFileSize>
             <maxHistory>${maxHistory}</maxHistory>
             <totalSizeCap>${file.totalSize}</totalSizeCap>
         </rollingPolicy>
         <encoder charset="UTF-8">
-            <pattern>${project.pattern}</pattern>
+            <pattern>${log.pattern.file}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -50,18 +50,17 @@
         </filter>
     </appender>
 
-    <!--warn_log-->
+    <!-- WARN 日志文件 -->
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${log.path}/log_warn.log</file>
+        <file>${log.path}/warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/%d{YYYY-MM-dd}/${project.name}_warn_%d{YYYY-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/warn_%i.log</fileNamePattern>
             <maxFileSize>${file.Size}</maxFileSize>
             <maxHistory>${maxHistory}</maxHistory>
             <totalSizeCap>${file.totalSize}</totalSizeCap>
         </rollingPolicy>
         <encoder charset="UTF-8">
-            <pattern>${project.pattern}</pattern>
+            <pattern>${log.pattern.file}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
@@ -70,18 +69,17 @@
         </filter>
     </appender>
 
-    <!--error_log-->
+    <!-- ERROR 日志文件 -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${log.path}/log_error.log</file>
+        <file>${log.path}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/%d{YYYY-MM-dd}/${project.name}_error_%d{YYYY-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/error_%i.log</fileNamePattern>
             <maxFileSize>${file.Size}</maxFileSize>
             <maxHistory>${maxHistory}</maxHistory>
             <totalSizeCap>${file.totalSize}</totalSizeCap>
         </rollingPolicy>
         <encoder charset="UTF-8">
-            <pattern>${project.pattern}</pattern>
+            <pattern>${log.pattern.file}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -90,74 +88,18 @@
         </filter>
     </appender>
 
-    <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
-    <springProfile name="dev">
-        <logger name="root" level="INFO" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-        <logger name="com.ethan" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-    </springProfile>
+    <!-- SQL 专用日志输出（可选） -->
+    <logger name="com.baomidou" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 
-    <springProfile name="local">
-        <logger name="root" level="INFO" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-        <logger name="com.ethan" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-    </springProfile>
+    <logger name="com.ethan" level="DEBUG"/>
 
-    <springProfile name="prod">
-        <logger name="root" level="INFO" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-        </logger>
-        <logger name="com.ethan" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-    </springProfile>
-
-    <springProfile name="test">
-        <logger name="root" level="INFO" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-        </logger>
-        <logger name="com.ethan" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-    </springProfile>
-
-    <springProfile name="product">
-        <logger name="root" level="INFO" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-        </logger>
-        <logger name="com.ethan" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-        </logger>
-    </springProfile>
+    <!-- Spring Boot 默认 root 日志设置 -->
+    <root level="INFO">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="WARN_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
 </configuration>

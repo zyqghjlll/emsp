@@ -1,4 +1,4 @@
-package com.ethan.emsp.controller;
+package com.ethan.emsp.api.controller;
 
 import com.ethan.emsp.core.result.ResultMessage;
 import com.ethan.emsp.domain.location.Location;
