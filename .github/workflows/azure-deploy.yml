@@ -3,11 +3,8 @@ name: Build and Deploy to Azure
 on:
   push:
     branches:
-      - main  # 或你默认分支
-  workflow_dispatch:
-
-permissions:
-  contents: read
+      - main
+  workflow_dispatch:  # 支持手动触发
 
 jobs:
   build-and-deploy:
@@ -26,10 +23,14 @@ jobs:
       - name: 🧱 Build with Maven
         run: mvn clean package -DskipTests
 
+      - name: 🔐 Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'emsp-app'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-name: emsp-app
+          slot-name: production
           package: target/emsp-0.0.1-SNAPSHOT.jar
