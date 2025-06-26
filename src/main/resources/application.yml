@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8000}
+  port: 80
 spring:
   application:
     name: emsp-service
