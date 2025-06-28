@@ -37,14 +37,13 @@ az webapp create \
   --name "$APP_NAME" \
   --plan "$PLAN_NAME" \
   --resource-group "$RESOURCE_GROUP" \
-  --deployment-container-image-name "$IMAGE_NAME"
 
 # ========== 配置容器镜像认证（用于私有 GHCR 镜像） ==========
 echo "🔧 配置私有镜像仓库访问..."
 az webapp config container set \
   --name "$APP_NAME" \
   --resource-group "$RESOURCE_GROUP" \
-  --docker-custom-image-name "$IMAGE_NAME" \
+  --container-image-name "$IMAGE_NAME" \
   --container-registry-url "https://$IMAGE_REPOSITORY" \
   --container-registry-user "$GHCR_USER" \
   --container-registry-password "$GHCR_PAT"
