@@ -10,7 +10,7 @@ SKU="F1"
 IMAGE_REPOSITORY="ghcr.io"
 IMAGE_NAME="$IMAGE_REPOSITORY/zyqghjlll/emsp:latest"
 GHCR_USER="zyqghjlll"
-GHCR_PAT="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" # 可传入环境变量方式 export GHCR_PAT="..."
+GHCR_PAT="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" # 可传入环境变量方式 export GHCR_PAT="..."
 
 # ========== 登录 Azure（缓存登录可跳过） ==========
 echo "🔐 登录 Azure..."
@@ -37,6 +37,7 @@ az webapp create \
   --name "$APP_NAME" \
   --plan "$PLAN_NAME" \
   --resource-group "$RESOURCE_GROUP" \
+  --container-image-name "$IMAGE_NAME"
 
 # ========== 配置容器镜像认证（用于私有 GHCR 镜像） ==========
 echo "🔧 配置私有镜像仓库访问..."
