@@ -3,7 +3,9 @@ package com.ethan.emsp.api.controller.dto;
 import com.ethan.emsp.domain.model.location.BusinessHours;
 import com.ethan.emsp.domain.model.location.Coordinate;
 import com.ethan.emsp.domain.model.location.CreateLocationCmd;
+import lombok.Data;
 
+@Data
 public class CreateLocationDto {
     private String name;
     private String address;

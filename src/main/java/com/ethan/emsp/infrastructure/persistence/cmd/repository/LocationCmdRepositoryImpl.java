@@ -19,7 +19,7 @@ public class LocationCmdRepositoryImpl implements LocationCmdRepository {
     @Override
     public void save(Location location) {
         LocationPO locationPO = new LocationPO();
-        locationPO.setId(location.getId().toString());
+        locationPO.setId(location.getId().getValue());
         locationPO.setName(location.getAttributes().getName());
         locationPO.setAddress(location.getAttributes().getAddress());
         locationPO.setLatitude(location.getAttributes().getCoordinate().latitude());
@@ -49,7 +49,7 @@ public class LocationCmdRepositoryImpl implements LocationCmdRepository {
     @Override
     public void update(Location location) {
         LocationPO locationPO = new LocationPO();
-        locationPO.setId(location.getId().toString());
+        locationPO.setId(location.getId().getValue());
         locationPO.setName(location.getAttributes().getName());
         locationPO.setAddress(location.getAttributes().getAddress());
         locationPO.setOpenTime(location.getAttributes().getBusinessHours().openTime().toString());

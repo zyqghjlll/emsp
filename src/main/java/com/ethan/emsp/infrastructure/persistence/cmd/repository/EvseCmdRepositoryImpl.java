@@ -1,5 +1,6 @@
 package com.ethan.emsp.infrastructure.persistence.cmd.repository;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.ethan.emsp.domain.model.evse.Connector;
 import com.ethan.emsp.domain.model.evse.Evse;
@@ -94,6 +95,8 @@ public class EvseCmdRepositoryImpl implements EvseCmdRepository {
             connectorPO.setStandard(connector.standard());
             connectorPOS.add(connectorPO);
         }
-        connectorCmdMapper.insertBatch(connectorPOS);
+        if (CollUtil.isNotEmpty(connectorPOS)) {
+            connectorCmdMapper.insertBatch(connectorPOS);
+        }
     }
 }

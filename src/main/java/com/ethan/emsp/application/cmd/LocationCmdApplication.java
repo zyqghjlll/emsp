@@ -20,7 +20,7 @@ public class LocationCmdApplication {
     public String create(CreateLocationCmd command) {
         Location location = locationDomainService.create(command);
         locationRepository.save(location);
-        appEventPublisher.publish(new LocationCreatedEvent(location.getId().toString(), location.getAttributes().getName()));
+        appEventPublisher.publish(new LocationCreatedEvent(location.getId().getValue(), location.getAttributes().getName()));
         return location.getId().toString();
     }
 
@@ -35,6 +35,6 @@ public class LocationCmdApplication {
         attributes.setBusinessHours(command.businessHours());
         location.updateAttributes(attributes);
         locationRepository.update(location);
-        appEventPublisher.publish(new LocationUpdatedDomainEvent(location.getId().toString(), location.getAttributes().getName()));
+        appEventPublisher.publish(new LocationUpdatedDomainEvent(location.getId().getValue(), location.getAttributes().getName()));
     }
 }

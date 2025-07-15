@@ -2,14 +2,14 @@ package com.ethan.emsp.core.result;
 
 public enum ResultCode {
     // 200 成功
-    SUCCESS(200, "Success"),
+    SUCCESS(200, "OK"),
 
     // 400 系列客户端错误
-    INVALID_ARGUMENT(400, "Invalid request parameter"),
+    INVALID_ARGUMENT(400, "Bad Request"),
     UNAUTHORIZED(401, "Unauthorized access"),
     FORBIDDEN(403, "Forbidden access"),
     NOT_FOUND(404, "Resource not found"),
-    CONFLICT(409, "Resource already exists"),
+    CONFLICT(409, "Conflict"),
     BUSINESS_LIMIT(410, "Reached some business limit"),
     UNSUPPORTED_MEDIA_TYPE(415, "Unsupported media type"),
     TOO_MANY_REQUESTS(429, "Too many requests"),

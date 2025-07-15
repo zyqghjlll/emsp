@@ -1,6 +1,5 @@
 package com.ethan.emsp.application.cmd;
 
-import com.ethan.emsp.api.controller.dto.AddConnectorDto;
 import com.ethan.emsp.core.ddd.AppEventPublisher;
 import com.ethan.emsp.core.result.exception.ConflictException;
 import com.ethan.emsp.core.result.exception.NotFoundException;
