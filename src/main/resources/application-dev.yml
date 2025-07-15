@@ -1,13 +1,8 @@
 spring:
   datasource:
-    #  连接地址（解决UTF-8中文乱码问题 + 时区校正）
-    #  rewriteBatchedStatements=true 开启批处理模式）
-    url: jdbc:postgresql://127.0.0.1:5432/emsp_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-    #  用户名
+    url: jdbc:postgresql://localhost:5432/emsp_db
     username: streamwise
-    #  密码
     password: streamwise
-    #  连接驱动名称
     driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: Hikari

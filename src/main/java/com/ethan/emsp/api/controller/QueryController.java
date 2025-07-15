@@ -1,21 +1,28 @@
 package com.ethan.emsp.api.controller;
 
+import com.ethan.emsp.api.controller.dto.LocationQueryDto;
+import com.ethan.emsp.api.controller.vo.EvsePageVo;
+import com.ethan.emsp.api.controller.vo.LocationPageVo;
+import com.ethan.emsp.api.controller.vo.LocationVo;
+import com.ethan.emsp.application.query.LocationQueryApplication;
 import com.ethan.emsp.core.result.ResultMessage;
-import com.ethan.emsp.domain.location.Location;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.ethan.emsp.domain.model.location.Location;
+import com.ethan.emsp.infrastructure.persistence.query.common.PageResult;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/query")
+@AllArgsConstructor
 public class QueryController {
-    // 根据 last_updated 分页查询 Location 和其 EVSE
-    @GetMapping("/location/evse")
-    public ResultMessage<List<Location>> queryLocationEvse(@RequestParam("last_updated") String lastUpdated,
-                                                           @RequestParam("page_size") int pageSize) {
-        return ResultMessage.success(null);
+
+    private final LocationQueryApplication locationQueryApplication;
+
+    @GetMapping("/queryByLastUpdated")
+    public ResultMessage<PageResult<LocationPageVo>> queryByLastUpdated(@ModelAttribute LocationQueryDto queryDto) {
+        PageResult<LocationPageVo> pageReuslt = locationQueryApplication.queryByLastUpdated(queryDto);
+        return ResultMessage.success(pageReuslt);
     }
 }

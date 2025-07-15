@@ -1,40 +1,48 @@
 package com.ethan.emsp.core.result;
 
 public enum ResultCode {
-    SUCCESS("0000", "成功"),
-    FAIL("0001", "失败"),
-    NOT_FOUND("0002", "未找到"),
-    NOT_AUTH("0003", "未授权"),
-    NOT_LOGIN("0004", "未登录"),
-    NOT_SUPPORT("0005", "不支持"),
-    NOT_ALLOWED("0006", "不允许"),
-    NOT_EXIST("0007", "不存在"),
-    NOT_VALID("0008", "无效"),
-    NOT_SUPPORT_OPERATION("0009", "不支持的操作"),
+    // 200 成功
+    SUCCESS(200, "Success"),
+
+    // 400 系列客户端错误
+    INVALID_ARGUMENT(400, "Invalid request parameter"),
+    UNAUTHORIZED(401, "Unauthorized access"),
+    FORBIDDEN(403, "Forbidden access"),
+    NOT_FOUND(404, "Resource not found"),
+    CONFLICT(409, "Resource already exists"),
+    BUSINESS_LIMIT(410, "Reached some business limit"),
+    UNSUPPORTED_MEDIA_TYPE(415, "Unsupported media type"),
+    TOO_MANY_REQUESTS(429, "Too many requests"),
+
+    // 500 系列服务端错误
+    SERVER_ERROR(500, "Internal server error"),
+    NOT_IMPLEMENTED(501, "Not implemented"),
+    BAD_GATEWAY(502, "Bad gateway"),
+    SERVICE_UNAVAILABLE(503, "Service unavailable"),
+    GATEWAY_TIMEOUT(504, "Gateway timeout"),
+
+    // -------------------------------------------------------------------------------------------------------------------
+
+    // 通用默认
+    UNEXPECTED_ERROR(5000, "An unexpected error occurred. Please contact support."),
+
+    DATA_ACCESS_ERROR(5001, "Database unavailable"),
+    EXTERNAL_SYSTEM_ERROR(5002, "External system unavailable"),
 
     ;
-    private final String code;
-    private final String message;
+    private final int code;
+    private final String description;
 
-    ResultCode(String code, String message) {
+    ResultCode(int code, String description) {
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public static ResultCode getByCode(String code) {
-        for (ResultCode resultCode : values()) {
-            if (resultCode.code.equals(code)) {
-                return resultCode;
-            }
-        }
-        return null;
+    public String getDescription() {
+        return description;
     }
 }

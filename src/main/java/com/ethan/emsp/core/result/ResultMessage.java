@@ -1,24 +1,56 @@
 package com.ethan.emsp.core.result;
 
-import lombok.Data;
-
-@Data
-public class ResultMessage<T> {
-    private final String code;
-    private final String message;
-    private final T data;
-
-    public ResultMessage(String code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
+public record ResultMessage<T>(
+        int code,
+        String message,
+        String detail,
+        T data
+) {
+    private ResultMessage() {
+        this(0, null, null, null);
     }
 
+    // 成功
     public static <T> ResultMessage<T> success(T data) {
-        return new ResultMessage<T>("200", "success", data);
+        return new ResultMessage<>(
+                ResultCode.SUCCESS.getCode(),
+                ResultCode.SUCCESS.getDescription(),
+                null,
+                data
+        );
     }
 
-    public static <T> ResultMessage<T> fail(T data) {
-        return new ResultMessage<T>("500", "fail", data);
+    public static <T> ResultMessage<T> success() {
+        return success(null);
+    }
+
+    // 简单失败
+    public static <T> ResultMessage<T> failure(ResultCode resultCode) {
+        return new ResultMessage<>(
+                resultCode.getCode(),
+                resultCode.getDescription(),
+                null,
+                null
+        );
+    }
+
+    // 带详细信息的失败
+    public static <T> ResultMessage<T> failure(ResultCode resultCode, String detail) {
+        return new ResultMessage<>(
+                resultCode.getCode(),
+                resultCode.getDescription(),
+                detail,
+                null
+        );
+    }
+
+    // 特殊需要可返回带 data 的失败
+    public static <T> ResultMessage<T> failure(ResultCode resultCode, String detail, T data) {
+        return new ResultMessage<>(
+                resultCode.getCode(),
+                resultCode.getDescription(),
+                detail,
+                data
+        );
     }
 }

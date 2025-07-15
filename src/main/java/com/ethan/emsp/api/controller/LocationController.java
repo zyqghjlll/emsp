@@ -1,32 +1,40 @@
 package com.ethan.emsp.api.controller;
 
-import com.ethan.emsp.application.command.LocationCmdApplication;
-import com.ethan.emsp.application.query.LocationQueryApplication;
+import com.ethan.emsp.api.controller.dto.AddEvseToLocationDto;
 import com.ethan.emsp.api.controller.dto.CreateLocationDto;
+import com.ethan.emsp.api.controller.dto.UpdateLocationDto;
+import com.ethan.emsp.application.cmd.LocationCmdApplication;
+import com.ethan.emsp.application.cmd.LocationEvseCmdApplication;
 import com.ethan.emsp.core.result.ResultMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/location")
+@AllArgsConstructor
 public class LocationController {
 
-    @Autowired
-    private LocationQueryApplication locationApplication;
-    @Autowired
-    private LocationCmdApplication locationCommandApplication;
+    private final LocationCmdApplication locationCmdApplication;
+    private final LocationEvseCmdApplication locationEvseCmdApplication;
 
-    @RequestMapping("/create")
+    @PostMapping("/create")
     public ResultMessage<String> create(@RequestBody CreateLocationDto dto) {
-        String id = locationCommandApplication.create(dto.toCommand());
+        String id = locationCmdApplication.create(dto.toCommand());
         return ResultMessage.success(id);
     }
 
-    // 更新位置
-    @RequestMapping("/update")
-    public ResultMessage<String> update() {
-        throw new RuntimeException("测试异常");
+    @PostMapping("/update")
+    public ResultMessage<Void> update(@RequestBody UpdateLocationDto dto) {
+        locationCmdApplication.update(dto.toCommand());
+        return ResultMessage.success();
+    }
+
+    @PostMapping("/addEvse")
+    public ResultMessage<Boolean> addEvse(@RequestBody AddEvseToLocationDto dto) {
+        locationEvseCmdApplication.addEvse(dto.toCommand());
+        return ResultMessage.success(true);
     }
 }

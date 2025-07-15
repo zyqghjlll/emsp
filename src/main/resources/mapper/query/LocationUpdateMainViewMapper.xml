@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ethan.emsp.infrastructure.persistence.query.mapper.LocationUpdateMainViewMapper">
+
+    <select id="selectByLastUpdated" resultType="com.ethan.emsp.infrastructure.persistence.query.po.LocationUpdateDetailViewPO">
+        SELECT
+        *
+        FROM db_location_update_main_view as
+        <where>
+            <if test="queryDto.lastUpdated != null">
+                AND last_updated &gt;= #{queryDto.lastUpdated}
+            </if>
+        </where>
+    </select>
+
+</mapper>

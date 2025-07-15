@@ -3,7 +3,7 @@
 
 第一周目标：完成最小可运行架构（DDD骨架 + 心跳接口 + 本地运行 + Docker化 + GitHub提交）。
 
-第二周：建模 Location / EVSE / Connector，设计事件机制，完成部分核心 API。
+第二周：建模 Location / Evse / Connector，设计事件机制，完成部分核心 API。
 
 第三周：接入数据校验、状态机、事件发布机制，编写单测，准备 Azure/AWS 部署。
 
@@ -19,8 +19,8 @@
 │
 ├── domain                 # 领域层
 │   ├── model
-│   │   ├── entity         # 实体（Location、EVSE、Connector）
-│   │   ├── vo             # 值对象（EVSEId、坐标等）
+│   │   ├── entity         # 实体（Location、Evse、Connector）
+│   │   ├── vo             # 值对象（EvseId、坐标等）
 │   │   ├── aggregate      # 聚合根（如 LocationAggregate）
 │   │   └── event          # 领域事件
 │   ├── repository         # 仓储接口
@@ -86,7 +86,7 @@ Java + RESTful + DDD + EDD + RDBMS + CI/CD + 云部署
 ## 关键实体
 Location：充电站点，包括名称、地址、坐标、营业时间等。
 
-EVSE：一个充电设备单元，属于某个 Location，带有状态。
+Evse：一个充电设备单元，属于某个 Location，带有状态。
 
 状态：AVAILABLE, BLOCKED, INOPERATIVE, REMOVED
 
@@ -100,17 +100,17 @@ AVAILABLE ↔ INOPERATIVE
 
 ANY → REMOVED（不可逆）
 
-EVSE ID 格式：<CountryCode>*<PartyID>*<LocalEVSEID>（如：US*ABC*EVSE123456）
+Evse ID 格式：<CountryCode>*<PartyID>*<LocalEvseID>（如：US*ABC*Evse123456）
 
-Connector：EVSE 下的具体充电接口，包含标准、电压、功率等参数。
+Connector：Evse 下的具体充电接口，包含标准、电压、功率等参数。
 
 ## 需要实现的接口（RESTful API）
 创建、更新 Location
 
-添加 EVSE 到指定 Location（校验 EVSE ID 格式）
+添加 Evse 到指定 Location（校验 Evse ID 格式）
 
-EVSE 状态变更（需遵循状态机）
+Evse 状态变更（需遵循状态机）
 
-添加 Connector 到 EVSE
+添加 Connector 到 Evse
 
-根据 last_updated 分页查询 Location 和其 EVSE
+根据 last_updated 分页查询 Location 和其 Evse
