@@ -40,10 +40,10 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
 
-#      - name: 🔐 Azure Login
-#        uses: azure/login@v1
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #      - name: 🔐 Azure Login
+      #        uses: azure/login@v1
+      #        with:
+      #          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
@@ -52,3 +52,16 @@ jobs:
           slot-name: production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           images: ghcr.io/${{ github.repository }}:latest
+
+      - name: 🚀 Deploy to AWS EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          script: |
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/${{ github.repository }}:latest
+            docker stop emsp || true
+            docker rm emsp || true
+            docker run -d --name emsp -e SPRING_PROFILES_ACTIVE=aws -p 8080:8080 ghcr.io/${{ github.repository }}:latest
