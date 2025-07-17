@@ -2,14 +2,14 @@ package com.ethan.emsp.infrastructure.persistence.query.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ethan.emsp.api.controller.dto.LocationQueryDto;
-import com.ethan.emsp.infrastructure.persistence.query.po.LocationUpdateDetailViewPO;
-import com.ethan.emsp.infrastructure.persistence.query.po.LocationUpdateMainViewPO;
+import com.ethan.emsp.infrastructure.persistence.query.view.LocationUpdateDetailViewBO;
+import com.ethan.emsp.infrastructure.persistence.query.view.LocationUpdateMainViewBO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
-public interface LocationUpdateMainViewMapper extends BaseMapper<LocationUpdateMainViewPO> {
-    List<LocationUpdateDetailViewPO> selectByLastUpdated(@Param("queryDto") LocationQueryDto queryDto);
+public interface LocationUpdateMainViewMapper extends BaseMapper<LocationUpdateMainViewBO> {
+    List<LocationUpdateDetailViewBO> selectByLastUpdated(@Param("queryDto") LocationQueryDto queryDto);
 }

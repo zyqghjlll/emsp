@@ -1,4 +1,4 @@
-package com.ethan.emsp.infrastructure.persistence.query.po;
+package com.ethan.emsp.infrastructure.persistence.query.view;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 @TableName("db_location_update_detail_view")
 @Data
-public class LocationUpdateMainViewPO {
+public class LocationUpdateDetailViewBO {
     @TableId
     private Long id;
 

@@ -1,23 +1,16 @@
 package com.ethan.emsp.infrastructure.persistence.query.repository;
 
 import com.ethan.emsp.api.controller.dto.LocationQueryDto;
-import com.ethan.emsp.api.controller.vo.ConnectorVo;
-import com.ethan.emsp.api.controller.vo.EvsePageVo;
 import com.ethan.emsp.api.controller.vo.LocationPageVo;
 import com.ethan.emsp.infrastructure.persistence.query.LocationUpdatedQueryRepository;
 import com.ethan.emsp.infrastructure.persistence.query.common.PageResult;
+import com.ethan.emsp.infrastructure.persistence.query.mapper.LocationQueryMapper;
 import com.ethan.emsp.infrastructure.persistence.query.mapper.LocationUpdateDetailViewMapper;
 import com.ethan.emsp.infrastructure.persistence.query.mapper.LocationUpdateMainViewMapper;
-import com.ethan.emsp.infrastructure.persistence.query.po.LocationUpdateDetailViewPO;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.ethan.emsp.infrastructure.persistence.query.view.LocationView;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Repository
@@ -26,6 +19,7 @@ public class LocationUpdatedQueryRepositoryImpl implements LocationUpdatedQueryR
 
     private final LocationUpdateMainViewMapper locationUpdateMainViewMapper;
     private final LocationUpdateDetailViewMapper locationUpdateDetailViewMapper;
+    private final LocationQueryMapper locationQueryMapper;
 
     @Override
     public PageResult<LocationPageVo> queryByLastUpdated(LocationQueryDto queryDto) {
@@ -74,5 +68,10 @@ public class LocationUpdatedQueryRepositoryImpl implements LocationUpdatedQueryR
 //        }
 
         return null;
+    }
+
+    @Override
+    public LocationView getById(String locationId) {
+        return locationQueryMapper.getById(locationId);
     }
 }

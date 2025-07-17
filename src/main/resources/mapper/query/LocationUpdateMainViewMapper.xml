@@ -4,7 +4,7 @@
 
 <mapper namespace="com.ethan.emsp.infrastructure.persistence.query.mapper.LocationUpdateMainViewMapper">
 
-    <select id="selectByLastUpdated" resultType="com.ethan.emsp.infrastructure.persistence.query.po.LocationUpdateDetailViewPO">
+    <select id="selectByLastUpdated" resultType="com.ethan.emsp.infrastructure.persistence.query.view.LocationUpdateDetailViewBO">
         SELECT
         *
         FROM db_location_update_main_view as
