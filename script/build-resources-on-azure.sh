@@ -39,6 +39,13 @@ az webapp create \
   --resource-group "$RESOURCE_GROUP" \
   --container-image-name "$IMAGE_NAME"
 
+# ========== 设置 Spring Boot Profile ==========
+echo "🌱 注入环境变量 SPRING_PROFILES_ACTIVE=azure..."
+az webapp config appsettings set \
+  --name "$APP_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --settings SPRING_PROFILES_ACTIVE=azure
+
 # ========== 配置容器镜像认证（用于私有 GHCR 镜像） ==========
 echo "🔧 配置私有镜像仓库访问..."
 az webapp config container set \
