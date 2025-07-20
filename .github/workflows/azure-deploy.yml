@@ -45,6 +45,16 @@ jobs:
       #        with:
       #          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: 🌍 Set Azure App Settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: emsp-app
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-settings-json: |
+            [
+              { "name": "SPRING_PROFILES_ACTIVE", "value": "azure" }
+            ]
+
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:

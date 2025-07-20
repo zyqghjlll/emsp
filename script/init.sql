@@ -49,43 +49,60 @@ CREATE TABLE public.db_connector
     CONSTRAINT db_connector_pk PRIMARY KEY (id)
 );
 
--- public.db_location_update_main_view definition
+-- public.db_location_view definition
 
 -- Drop table
 
--- DROP TABLE public.db_location_update_main_view;
+-- DROP TABLE public.db_location_view;
 
-CREATE TABLE public.db_location_update_main_view
+CREATE TABLE public.db_location_view
 (
-    id           varchar NOT NULL,
-    location_id  varchar NULL,
-    last_updated timestamp NULL,
-    CONSTRAINT db_location_update_view_pk PRIMARY KEY (id)
+    id          varchar     NOT NULL,
+    location_id varchar(64) NOT NULL,
+    "name"      varchar(128) NULL,
+    address     varchar(255) NULL,
+    latitude    varchar(32) NULL,
+    longitude   varchar(32) NULL,
+    open_time   varchar(32) NULL,
+    close_time  varchar(32) NULL,
+    created_at  timestamp DEFAULT now() NULL,
+    updated_at  timestamp DEFAULT now() NULL,
+    CONSTRAINT db_location_view_pkey PRIMARY KEY (id)
 );
 
--- public.db_location_update_detail_view definition
+-- public.db_evse_view definition
 
 -- Drop table
 
--- DROP TABLE public.db_location_update_detail_view;
+-- DROP TABLE public.db_evse_view;
 
-CREATE TABLE public.db_location_update_detail_view
+CREATE TABLE public.db_evse_view
+(
+    id          varchar     NOT NULL,
+    evse_id     varchar(64) NOT NULL,
+    location_id varchar(64) NULL,
+    evse_status varchar(32) NULL,
+    created_at  timestamp DEFAULT now() NULL,
+    updated_at  timestamp DEFAULT now() NULL,
+    CONSTRAINT db_evse_view_pkey PRIMARY KEY (id)
+);
+
+-- public.db_connector_view definition
+
+-- Drop table
+
+-- DROP TABLE public.db_connector_view;
+
+CREATE TABLE public.db_connector_view
 (
     id                 varchar     NOT NULL,
-    location_id        varchar(64) NOT NULL,
-    location_name      varchar(255) NULL,
-    location_address   varchar(255) NULL,
-    latitude           varchar(50) NULL,
-    longitude          varchar(50) NULL,
-    open_time          varchar(50) NULL,
-    close_time         varchar(50) NULL,
-    evse_id            varchar(64) NULL,
-    evse_status        varchar(32) NULL,
-    connector_type     varchar(32) NULL,
+    evse_id            varchar(64) NOT NULL,
+    connector_type     varchar(64) NULL,
     connector_voltage  int4 NULL,
     connector_amperage int4 NULL,
     connector_power    float8 NULL,
-    connector_standard varchar(32) NULL,
-    main_id            varchar NULL,
-    CONSTRAINT location_evse_view_pkey PRIMARY KEY (id)
+    connector_standard varchar(64) NULL,
+    created_at         timestamp DEFAULT now() NULL,
+    updated_at         timestamp DEFAULT now() NULL,
+    CONSTRAINT db_connector_view_pkey PRIMARY KEY (id)
 );
