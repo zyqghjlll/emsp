@@ -8,7 +8,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @SpringBootApplication
 @MapperScan(basePackages = {
-        "com.ethan.emsp.infrastructure.persistence.cmd.mapper",
+        "com.ethan.emsp.infrastructure.persistence.domain.mapper",
+        "com.ethan.emsp.infrastructure.persistence.event.mapper",
         "com.ethan.emsp.infrastructure.persistence.query.mapper"
 })
 public class EmspApplication {

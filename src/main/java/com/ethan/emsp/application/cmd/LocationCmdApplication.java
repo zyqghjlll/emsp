@@ -3,12 +3,15 @@ package com.ethan.emsp.application.cmd;
 import com.ethan.emsp.core.ddd.AppEventPublisher;
 import com.ethan.emsp.core.result.ResultCode;
 import com.ethan.emsp.core.result.exception.BusinessException;
-import com.ethan.emsp.domain.event.LocationUpdatedDomainEvent;
+import com.ethan.emsp.domain.event.LocationChangedEvent;
 import com.ethan.emsp.domain.model.location.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class LocationCmdApplication {
@@ -20,10 +23,13 @@ public class LocationCmdApplication {
     public String create(CreateLocationCmd command) {
         Location location = locationDomainService.create(command);
         locationRepository.save(location);
-        appEventPublisher.publish(new LocationCreatedEvent(location.getId().getValue(), location.getAttributes().getName()));
+
+        sendEvent(location);
+
         return location.getId().toString();
     }
 
+    @Transactional
     public void update(UpdateLocationCmd command) {
         Location location = locationRepository.getById(command.id());
         if (location == null) {
@@ -35,6 +41,15 @@ public class LocationCmdApplication {
         attributes.setBusinessHours(command.businessHours());
         location.updateAttributes(attributes);
         locationRepository.update(location);
-        appEventPublisher.publish(new LocationUpdatedDomainEvent(location.getId().getValue(), location.getAttributes().getName()));
+
+        sendEvent(location);
+    }
+
+    private void sendEvent(Location location) {
+        Assert.notNull(location, "location must not be null");
+        Assert.notNull(location.getId(), "location.id must not be null");
+
+        appEventPublisher.publish(LocationChangedEvent.of(location));
+        log.info("Publishing LocationChangedEvent: {}", location.getId());
     }
 }

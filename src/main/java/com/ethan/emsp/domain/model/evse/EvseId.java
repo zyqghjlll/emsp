@@ -38,8 +38,12 @@ public class EvseId {
         return countryCode + "*" + partyId + "*" + localEvseId.value();
     }
 
+    public String getValue() {
+        return buildId(countryCode, partyId, localEvseId);
+    }
+
     @Override
     public String toString() {
-        return buildId(countryCode, partyId, localEvseId);
+        return "EvseId(" + buildId(countryCode, partyId, localEvseId) + ")";
     }
 }

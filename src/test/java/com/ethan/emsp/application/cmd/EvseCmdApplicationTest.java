@@ -44,13 +44,11 @@ class EvseCmdApplicationTest {
     @Test
     void testCreate() {
         // Setup
-        final CreateEvseCmd command = new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"),
-                LocationId.of("value"));
+        final CreateEvseCmd command = new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"));
 
         // Configure EvseDomainService.create(...).
         final Evse evse = new Evse(new EvseId("value"), LocationId.of("value"), EvseStatus.INITIAL);
-        when(mockEvseDomainService.create(new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"),
-                LocationId.of("value")))).thenReturn(evse);
+        when(mockEvseDomainService.create(new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value")))).thenReturn(evse);
 
         when(mockEvseCmdRepository.exists(any(EvseId.class))).thenReturn(false);
 
@@ -66,13 +64,11 @@ class EvseCmdApplicationTest {
     @Test
     void testCreate_EvseCmdRepositoryExistsReturnsTrue() {
         // Setup
-        final CreateEvseCmd command = new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"),
-                LocationId.of("value"));
+        final CreateEvseCmd command = new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"));
 
         // Configure EvseDomainService.create(...).
         final Evse evse = new Evse(new EvseId("value"), LocationId.of("value"), EvseStatus.INITIAL);
-        when(mockEvseDomainService.create(new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value"),
-                LocationId.of("value")))).thenReturn(evse);
+        when(mockEvseDomainService.create(new CreateEvseCmd(CountryCode.CN, PartyID.ABC, new LocalEvseId("value")))).thenReturn(evse);
 
         when(mockEvseCmdRepository.exists(any(EvseId.class))).thenReturn(true);
 
@@ -90,10 +86,9 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        final boolean result = evseCmdApplicationUnderTest.changeStatus(command);
+        evseCmdApplicationUnderTest.changeStatus(command);
 
         // Verify the results
-        assertThat(result).isTrue();
         verify(mockEvseCmdRepository, never()).save(any(Evse.class));
         verify(mockAppEventPublisher, never()).publish(any(AppEvent.class));
     }
@@ -108,10 +103,9 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        final boolean result = evseCmdApplicationUnderTest.changeStatus(command);
+        evseCmdApplicationUnderTest.changeStatus(command);
 
         // Verify the results
-        assertThat(result).isTrue();
         verify(mockEvseCmdRepository).save(any(Evse.class));
         verify(mockAppEventPublisher).publish(any(AppEvent.class));
     }
@@ -126,10 +120,9 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        final boolean result = evseCmdApplicationUnderTest.changeStatus(command);
+        evseCmdApplicationUnderTest.changeStatus(command);
 
         // Verify the results
-        assertThat(result).isTrue();
         verify(mockEvseCmdRepository).save(any(Evse.class));
         verify(mockAppEventPublisher).publish(any(AppEvent.class));
     }

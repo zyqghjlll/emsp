@@ -34,9 +34,9 @@ public class EvseController {
 
     // Evse 状态变更（需遵循状态机）
     @PostMapping("/changeStatus")
-    public ResultMessage<Boolean> changeStatus(@RequestBody @Valid ChangeStatusDto dto) {
-        boolean result = evseCmdApplication.changeStatus(dto.toCommand());
-        return ResultMessage.success(result);
+    public ResultMessage<Void> changeStatus(@RequestBody @Valid ChangeStatusDto dto) {
+        evseCmdApplication.changeStatus(dto.toCommand());
+        return ResultMessage.success();
     }
 
     @PostMapping("/getById")

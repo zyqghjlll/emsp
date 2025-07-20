@@ -3,8 +3,7 @@ package com.ethan.emsp.application.cmd;
 import com.ethan.emsp.core.ddd.AppEventPublisher;
 import com.ethan.emsp.core.result.exception.ConflictException;
 import com.ethan.emsp.core.result.exception.NotFoundException;
-import com.ethan.emsp.domain.event.ChangedEvseDomainEvent;
-import com.ethan.emsp.domain.event.CreateEvseDomainEvent;
+import com.ethan.emsp.domain.event.EvseChangedEvent;
 import com.ethan.emsp.domain.model.evse.*;
 import com.ethan.emsp.domain.model.location.EvseCmdRepository;
 import lombok.AllArgsConstructor;
@@ -25,24 +24,28 @@ public class EvseCmdApplication {
             throw new ConflictException("EVSE already exists: " + evse.getId());
         }
         evseCmdRepository.save(evse);
-        appEventPublisher.publish(new CreateEvseDomainEvent(evse.getId(), evse.getLocationId(), evse.getStatus()));
+
+        sendEvent(evse);
+
         return evse.getId().toString();
     }
 
-    public boolean changeStatus(ChangeStatusCmd command) {
+    @Transactional
+    public void changeStatus(ChangeStatusCmd command) {
         Evse evse = evseCmdRepository.getById(command.evseId());
         if (evse == null) {
             throw new NotFoundException("EVSE not found: " + command.evseId());
         }
         if (evse.getStatus().equals(command.newStatus())) {
-            return true;
+            return;
         }
         evse.changeStatus(command.newStatus());
         evseCmdRepository.update(evse);
-        appEventPublisher.publish(new ChangedEvseDomainEvent(evse.getId(), evse.getLocationId(), evse.getStatus()));
-        return true;
+
+        sendEvent(evse);
     }
 
+    @Transactional
     public boolean addConnector(AddConnectorCmd command) {
         Evse evse = evseCmdRepository.getById(command.evseId());
         if (evse == null) {
@@ -50,6 +53,14 @@ public class EvseCmdApplication {
         }
         evse.addConnector(command.connector());
         evseCmdRepository.update(evse);
+
+        sendEvent(evse);
+
         return true;
+    }
+
+    private void sendEvent(Evse evse) {
+        EvseChangedEvent event = EvseChangedEvent.of(evse.getId().getValue(), evse.getStatus().toString(), evse.getConnectors());
+        appEventPublisher.publish(event);
     }
 }

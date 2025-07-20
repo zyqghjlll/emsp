@@ -2,9 +2,10 @@ package com.ethan.emsp.application.cmd;
 
 import com.ethan.emsp.core.ddd.AppEventPublisher;
 import com.ethan.emsp.core.result.exception.NotFoundException;
+import com.ethan.emsp.domain.event.EvseChangedEvent;
+import com.ethan.emsp.domain.event.LocationEvseChangedEvent;
 import com.ethan.emsp.domain.model.evse.AddEvseToLocationCmd;
 import com.ethan.emsp.domain.model.evse.Evse;
-import com.ethan.emsp.domain.model.evse.EvseAddedEvent;
 import com.ethan.emsp.domain.model.location.Equipment;
 import com.ethan.emsp.domain.model.location.EvseCmdRepository;
 import com.ethan.emsp.domain.model.location.Location;
@@ -31,14 +32,15 @@ public class LocationEvseCmdApplication {
 
         Evse evse = evseCmdRepository.getById(command.evseId());
         if (evse == null) {
-            throw new NotFoundException("EVSE not found: " + command.locationId());
+            throw new NotFoundException("EVSE not found: " + command.evseId());
         }
 
-        location.addEquipment(new Equipment(evse.getId().toString(), evse.getStatus().toString(), LocalDateTime.now()));
+        location.addEquipment(new Equipment(evse.getId().getValue(), evse.getStatus().name(), LocalDateTime.now()));
         evse.assignToLocation(location.getId());
         evseCmdRepository.update(evse);
 
         // 发布领域事件
-        appEventPublisher.publish(new EvseAddedEvent(location.getId().getValue(), evse.getId().toString()));
+        LocationEvseChangedEvent event = LocationEvseChangedEvent.of(evse.getId().getValue(), location.getId().getValue());
+        appEventPublisher.publish(event);
     }
 }

@@ -16,12 +16,12 @@ public class PageResult<T> {
     private final boolean hasNext;
     private final boolean hasPrevious;
 
-    public PageResult(PageInfo<T> pageInfo) {
+    public PageResult(List<T> records, PageInfo<?> pageInfo) {
         this.total = pageInfo.getTotal();
         this.pages = pageInfo.getPages();
         this.pageNum = pageInfo.getPageNum();
         this.pageSize = pageInfo.getPageSize();
-        this.records = new ArrayList<>(pageInfo.getList());
+        this.records = records;
         this.hasNext = pageInfo.isHasNextPage();
         this.hasPrevious = pageInfo.isHasPreviousPage();
     }
@@ -34,6 +34,10 @@ public class PageResult<T> {
         this.records = new ArrayList<>(list);
         this.hasNext = hasNext;
         this.hasPrevious = hasPrevious;
+    }
+
+    public static <T> PageResult<T> of(List<T> records, PageInfo<?> pageInfo) {
+        return new PageResult<>(records, pageInfo);
     }
 
     public List<T> getRecords() {

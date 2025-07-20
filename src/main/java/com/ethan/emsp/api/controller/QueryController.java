@@ -6,7 +6,6 @@ import com.ethan.emsp.api.controller.vo.LocationVo;
 import com.ethan.emsp.application.query.LocationQueryApplication;
 import com.ethan.emsp.core.result.ResultMessage;
 import com.ethan.emsp.infrastructure.persistence.query.common.PageResult;
-import com.ethan.emsp.infrastructure.persistence.query.view.LocationView;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +20,7 @@ public class QueryController {
     private final LocationQueryApplication locationQueryApplication;
 
     @GetMapping("/getById")
-    public ResultMessage<LocationView> getById(String locationId) {
+    public ResultMessage<LocationVo> getById(String locationId) {
         return ResultMessage.success(locationQueryApplication.getById(locationId));
     }
 

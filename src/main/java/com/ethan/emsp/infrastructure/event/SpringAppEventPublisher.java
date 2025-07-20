@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringAppEventPublisher implements AppEventPublisher {
 
-    private ApplicationEventPublisher springPublisher;
+    private final ApplicationEventPublisher springPublisher;
 
     public SpringAppEventPublisher(ApplicationEventPublisher springPublisher) {
         this.springPublisher = springPublisher;

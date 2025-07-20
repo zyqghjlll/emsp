@@ -25,16 +25,20 @@ public class Evse implements AggregateRoot<EvseId> {
         this.connectors.addAll(connectors);
     }
 
+    public Evse(EvseId evseId, EvseStatus status, List<Connector> connectors) {
+        this(evseId, LocationId.empty(), status, connectors);
+    }
+
     public Evse(EvseId evseId, LocationId locationId, EvseStatus status) {
         this(evseId, locationId, status, EMPTY_CONNECTORS);
     }
 
-    public static Evse of(EvseId evseId) {
-        return new Evse(evseId, null, EvseStatus.INITIAL, EMPTY_CONNECTORS);
+    public Evse(EvseId evseId, EvseStatus status) {
+        this(evseId, status, EMPTY_CONNECTORS);
     }
 
-    public static Evse of(EvseId evseId, LocationId locationId) {
-        return new Evse(evseId, locationId, EvseStatus.INITIAL, EMPTY_CONNECTORS);
+    public static Evse of(EvseId evseId) {
+        return new Evse(evseId, EvseStatus.INITIAL, EMPTY_CONNECTORS);
     }
 
     public void addConnector(Connector connector) {
@@ -58,6 +62,16 @@ public class Evse implements AggregateRoot<EvseId> {
     @Override
     public EvseId getId() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "Evse{" +
+                "id=" + id +
+                ", locationId=" + locationId +
+                ", status=" + status +
+                ", connectors=" + connectors +
+                '}';
     }
 
     public List<Connector> getConnectors() {

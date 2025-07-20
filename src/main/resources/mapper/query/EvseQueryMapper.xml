@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ethan.emsp.infrastructure.persistence.query.mapper.EvseQueryMapper">
+
+    <select id="selectByLocationIds"
+            resultType="com.ethan.emsp.infrastructure.persistence.event.po.EvseViewPO">
+        SELECT *
+        FROM db_evse_view
+        WHERE location_id IN
+        <foreach item="item" index="index" collection="locationIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

@@ -11,6 +11,6 @@ public class EvseDomainService {
 
     public Evse create(CreateEvseCmd command) {
         EvseId evseId = EvseId.of(command.countryCode(), command.partyId(), command.localEvseId());
-        return Evse.of(evseId, command.locationId());
+        return Evse.of(evseId);
     }
 }

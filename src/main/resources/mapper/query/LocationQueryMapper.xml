@@ -4,9 +4,18 @@
 
 <mapper namespace="com.ethan.emsp.infrastructure.persistence.query.mapper.LocationQueryMapper">
 
-    <select id="getById" resultType="com.ethan.emsp.infrastructure.persistence.query.view.LocationView">
-        select *
-        from db_location
-        where id = #{locationId}
+    <select id="selectByLastUpdated"
+            resultType="com.ethan.emsp.infrastructure.persistence.event.po.LocationViewPO">
+        SELECT *
+        FROM db_location_view
+        <where>
+            <if test="queryDto.lastUpdatedStart != null">
+                AND updated_at &gt;= #{queryDto.lastUpdatedStart}
+            </if>
+            <if test="queryDto.lastUpdatedEnd != null">
+                AND updated_at &lt;= #{queryDto.lastUpdatedEnd}
+            </if>
+        </where>
+        order by updated_at desc
     </select>
 </mapper>

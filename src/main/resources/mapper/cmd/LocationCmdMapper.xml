@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ethan.emsp.infrastructure.persistence.cmd.mapper.LocationCmdMapper">
+<mapper namespace="com.ethan.emsp.infrastructure.persistence.domain.mapper.LocationCmdMapper">
 
-    <select id="findByName" resultType="com.ethan.emsp.infrastructure.persistence.cmd.po.LocationPO">
+    <select id="findByName" resultType="com.ethan.emsp.infrastructure.persistence.domain.po.LocationPO">
         SELECT *
         FROM location
         WHERE name = #{name}
