@@ -1,7 +1,6 @@
-package com.ethan.emsp.domain.model.evse;
+package com.ethan.emsp.application.cmd;
 
-import com.ethan.emsp.domain.model.location.LocalEvseId;
-import com.ethan.emsp.domain.model.location.LocationId;
+import com.ethan.emsp.infrastructure.common.LocalEvseId;
 import com.ethan.emsp.infrastructure.common.CountryCode;
 import com.ethan.emsp.infrastructure.common.PartyID;
 

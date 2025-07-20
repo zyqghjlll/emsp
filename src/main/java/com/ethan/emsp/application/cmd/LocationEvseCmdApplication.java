@@ -2,12 +2,10 @@ package com.ethan.emsp.application.cmd;
 
 import com.ethan.emsp.core.ddd.AppEventPublisher;
 import com.ethan.emsp.core.result.exception.NotFoundException;
-import com.ethan.emsp.domain.event.EvseChangedEvent;
 import com.ethan.emsp.domain.event.LocationEvseChangedEvent;
-import com.ethan.emsp.domain.model.evse.AddEvseToLocationCmd;
 import com.ethan.emsp.domain.model.evse.Evse;
 import com.ethan.emsp.domain.model.location.Equipment;
-import com.ethan.emsp.domain.model.location.EvseCmdRepository;
+import com.ethan.emsp.domain.model.evse.EvseCmdRepository;
 import com.ethan.emsp.domain.model.location.Location;
 import com.ethan.emsp.domain.model.location.LocationCmdRepository;
 import lombok.AllArgsConstructor;

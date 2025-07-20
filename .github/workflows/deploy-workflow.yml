@@ -1,4 +1,4 @@
-name: Build and Deploy to Azure
+name: Build and Deploy to Azure and AWS EC2
 
 on:
   push:
@@ -20,8 +20,11 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: ✅ Run Unit Tests
+        run: mvn test
+
       - name: 🔨 Build JAR with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package
 
       - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

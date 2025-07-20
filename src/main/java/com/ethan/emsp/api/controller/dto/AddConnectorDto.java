@@ -1,6 +1,6 @@
 package com.ethan.emsp.api.controller.dto;
 
-import com.ethan.emsp.domain.model.evse.AddConnectorCmd;
+import com.ethan.emsp.application.cmd.AddConnectorCmd;
 import com.ethan.emsp.domain.model.evse.Connector;
 import com.ethan.emsp.domain.model.evse.EvseId;
 import jakarta.validation.constraints.NotBlank;

@@ -6,7 +6,7 @@ import com.ethan.emsp.domain.model.evse.Connector;
 import com.ethan.emsp.domain.model.evse.Evse;
 import com.ethan.emsp.domain.model.evse.EvseId;
 import com.ethan.emsp.domain.model.evse.EvseStatus;
-import com.ethan.emsp.domain.model.location.EvseCmdRepository;
+import com.ethan.emsp.domain.model.evse.EvseCmdRepository;
 import com.ethan.emsp.domain.model.location.LocationId;
 import com.ethan.emsp.infrastructure.persistence.domain.mapper.ConnectorCmdMapper;
 import com.ethan.emsp.infrastructure.persistence.domain.mapper.EvseCmdMapper;

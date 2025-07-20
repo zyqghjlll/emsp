@@ -7,7 +7,7 @@ WORKDIR /app
 # 拷贝构建后的 jar 包到容器中
 COPY target/emsp-0.0.1-SNAPSHOT.jar app.jar
 
-# 开放 HTTP 端口（Azure 期待是 80，ECS/Beanstalk 一般也是 80）
+# 开放 HTTP 端口
 EXPOSE 80
 
 # 启动命令

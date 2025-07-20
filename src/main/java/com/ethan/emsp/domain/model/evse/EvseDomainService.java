@@ -1,6 +1,6 @@
 package com.ethan.emsp.domain.model.evse;
 
-import com.ethan.emsp.domain.model.location.EvseCmdRepository;
+import com.ethan.emsp.application.cmd.CreateEvseCmd;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

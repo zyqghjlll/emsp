@@ -1,9 +1,8 @@
 package com.ethan.emsp.api.controller.dto;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.ethan.emsp.domain.model.location.BusinessHours;
 import com.ethan.emsp.domain.model.location.LocationId;
-import com.ethan.emsp.domain.model.location.UpdateLocationCmd;
+import com.ethan.emsp.application.cmd.UpdateLocationCmd;
 import lombok.Data;
 
 import java.io.Serializable;

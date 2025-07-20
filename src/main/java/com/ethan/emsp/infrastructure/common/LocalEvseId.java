@@ -1,7 +1,6 @@
-package com.ethan.emsp.domain.model.location;
+package com.ethan.emsp.infrastructure.common;
 
 import com.ethan.emsp.core.result.exception.InvalidArgumentException;
-import lombok.Getter;
 
 public record LocalEvseId(String value) {
     public LocalEvseId {

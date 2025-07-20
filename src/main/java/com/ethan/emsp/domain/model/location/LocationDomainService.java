@@ -1,5 +1,6 @@
 package com.ethan.emsp.domain.model.location;
 
+import com.ethan.emsp.application.cmd.CreateLocationCmd;
 import com.ethan.emsp.core.result.ResultCode;
 import com.ethan.emsp.core.result.exception.BusinessException;
 import com.ethan.emsp.infrastructure.utils.IdGenerator;
@@ -23,7 +24,6 @@ public class LocationDomainService {
                 .address(command.address())
                 .coordinate(command.coordinate())
                 .businessHours(command.businessHours())
-                .createdAt(LocalDateTime.now())
                 .build();
         return new Location(LocationId.of(idGenerator.generate()), attributes);
     }

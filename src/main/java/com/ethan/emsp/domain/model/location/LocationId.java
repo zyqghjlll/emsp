@@ -24,11 +24,6 @@ public final class LocationId {
         return value;
     }
 
-    @Override
-    public String toString() {
-        return "LocationId(" + value + ")";
-    }
-
     public boolean isEmpty() {
         return this == EMPTY;
     }

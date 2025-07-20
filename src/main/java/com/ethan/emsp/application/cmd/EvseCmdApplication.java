@@ -5,7 +5,7 @@ import com.ethan.emsp.core.result.exception.ConflictException;
 import com.ethan.emsp.core.result.exception.NotFoundException;
 import com.ethan.emsp.domain.event.EvseChangedEvent;
 import com.ethan.emsp.domain.model.evse.*;
-import com.ethan.emsp.domain.model.location.EvseCmdRepository;
+import com.ethan.emsp.domain.model.evse.EvseCmdRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class EvseCmdApplication {
 
         sendEvent(evse);
 
-        return evse.getId().toString();
+        return evse.getId().getValue();
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class EvseCmdApplication {
     }
 
     private void sendEvent(Evse evse) {
-        EvseChangedEvent event = EvseChangedEvent.of(evse.getId().getValue(), evse.getStatus().toString(), evse.getConnectors());
+        EvseChangedEvent event = EvseChangedEvent.of(evse.getId().getValue(), evse.getStatus().name(), evse.getConnectors());
         appEventPublisher.publish(event);
     }
 }

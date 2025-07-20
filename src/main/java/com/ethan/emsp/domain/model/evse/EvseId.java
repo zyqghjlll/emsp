@@ -1,8 +1,8 @@
 package com.ethan.emsp.domain.model.evse;
 
 import com.ethan.emsp.core.result.exception.InvalidArgumentException;
-import com.ethan.emsp.domain.model.location.LocalEvseId;
 import com.ethan.emsp.infrastructure.common.CountryCode;
+import com.ethan.emsp.infrastructure.common.LocalEvseId;
 import com.ethan.emsp.infrastructure.common.PartyID;
 import lombok.Getter;
 
@@ -40,10 +40,5 @@ public class EvseId {
 
     public String getValue() {
         return buildId(countryCode, partyId, localEvseId);
-    }
-
-    @Override
-    public String toString() {
-        return "EvseId(" + buildId(countryCode, partyId, localEvseId) + ")";
     }
 }

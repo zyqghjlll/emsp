@@ -1,6 +1,8 @@
-package com.ethan.emsp.domain.model.location;
+package com.ethan.emsp.application.cmd;
 
 import com.ethan.emsp.core.result.exception.InvalidArgumentException;
+import com.ethan.emsp.domain.model.location.BusinessHours;
+import com.ethan.emsp.domain.model.location.Coordinate;
 
 public record CreateLocationCmd(
         String name,

@@ -26,7 +26,7 @@ public class LocationCmdApplication {
 
         sendEvent(location);
 
-        return location.getId().toString();
+        return location.getId().getValue();
     }
 
     @Transactional

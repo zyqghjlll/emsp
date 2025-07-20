@@ -1,4 +1,4 @@
-package com.ethan.emsp.domain.model.location;
+package com.ethan.emsp.domain.model.evse;
 
 
 import com.ethan.emsp.domain.model.evse.Evse;
