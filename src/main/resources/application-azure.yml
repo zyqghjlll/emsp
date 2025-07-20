@@ -4,7 +4,7 @@ spring:
   application:
     name: emsp-service
   datasource:
-    url: jdbc:postgresql://emsp-pgsql.postgres.database.azure.com:5432/emsp_db
+    url: jdbc:postgresql://emsp-pgsql.postgres.database.azure.com:5432/postgres
     username: emspadmin
     password: MYBQ2s.EApzc2Gg
     driver-class-name: org.postgresql.Driver
