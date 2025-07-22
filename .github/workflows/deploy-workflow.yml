@@ -52,6 +52,16 @@ jobs:
 #        with:
 #          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: 注入 Azure 数据库环境变量
+        run: |
+          az webapp config appsettings set \
+            --name emsp-app \
+            --resource-group emsp-rg \
+            --settings \
+              SPRING_PROFILES_ACTIVE=azure \
+              AZURE_DB_USERNAME="${{ secrets.AZURE_DB_USERNAME }}" \
+              AZURE_DB_PASSWORD="${{ secrets.AZURE_DB_PASSWORD }}" \
+
       - name: 🚀 Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
