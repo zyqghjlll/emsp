@@ -54,11 +54,14 @@ az webapp create \
   --container-image-name "$IMAGE_NAME"
 
 # ========== 设置 Spring Boot Profile ==========
-echo "注入环境变量 SPRING_PROFILES_ACTIVE=azure..."
+echo "注入环境变量"
 az webapp config appsettings set \
   --name "$APP_NAME" \
   --resource-group "$RESOURCE_GROUP" \
-  --settings SPRING_PROFILES_ACTIVE=azure
+  --settings \
+    SPRING_PROFILES_ACTIVE=azure \
+    AWS_DB_USERNAME="${AWS_DB_USERNAME}" \
+    AWS_DB_PASSWORD="${AWS_DB_PASSWORD}"
 
 # ========== 配置容器镜像认证（用于私有 GHCR 镜像） ==========
 echo "配置私有镜像仓库访问..."

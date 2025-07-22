@@ -10,6 +10,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    env: # ✅ 在这里注入环境变量供 Docker/部署使用
+      AZURE_DB_USERNAME: ${{ secrets.AZURE_DB_USERNAME }}
+      AZURE_DB_PASSWORD: ${{ secrets.AZURE_DB_PASSWORD }}
+      AWS_DB_USERNAME: ${{ secrets.AWS_DB_USERNAME }}
+      AWS_DB_PASSWORD: ${{ secrets.AWS_DB_PASSWORD }}
+
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
@@ -67,4 +73,10 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}:latest
             docker stop emsp || true
             docker rm emsp || true
-            docker run -d --name emsp -e SPRING_PROFILES_ACTIVE=aws -p 8080:8080 ghcr.io/${{ github.repository }}:latest
+            docker run -d \
+              --name emsp \
+              -e SPRING_PROFILES_ACTIVE=aws \
+              -e AWS_DB_USERNAME=${{ secrets.AWS_DB_USERNAME }} \
+              -e AWS_DB_PASSWORD=${{ secrets.AWS_DB_PASSWORD }} \
+              -p 8080:8080 \
+              ghcr.io/${{ github.repository }}:latest
