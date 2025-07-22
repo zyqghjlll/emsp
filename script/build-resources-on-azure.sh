@@ -60,8 +60,8 @@ az webapp config appsettings set \
   --resource-group "$RESOURCE_GROUP" \
   --settings \
     SPRING_PROFILES_ACTIVE=azure \
-    AWS_DB_USERNAME="${AWS_DB_USERNAME}" \
-    AWS_DB_PASSWORD="${AWS_DB_PASSWORD}"
+    AZURE_DB_USERNAME="${AZURE_DB_USERNAME}" \
+    AZURE_DB_PASSWORD="${AZURE_DB_PASSWORD}"
 
 # ========== 配置容器镜像认证（用于私有 GHCR 镜像） ==========
 echo "配置私有镜像仓库访问..."
