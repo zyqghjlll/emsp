@@ -47,10 +47,10 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
 
-#      - name: 🔐 Azure Login
-#        uses: azure/login@v1
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: 🔐 Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 注入 Azure 数据库环境变量
         run: |
