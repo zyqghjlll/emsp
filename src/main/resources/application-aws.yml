@@ -5,8 +5,8 @@ spring:
     name: emsp-service
   datasource:
     url: jdbc:postgresql://emspdb.cvuea2cs0p8i.us-east-2.rds.amazonaws.com:5432/postgres
-    username: emspadmin
-    password: MYBQ2s.EApzc2Gg
+    username: ${{ secrets.AWS_DB_USERNAME }}
+    password: ${{ secrets.AWS_DB_PASSWORD }}
     driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: Hikari
