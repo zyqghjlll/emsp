@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 public record Equipment(
         String id,
         String status,
-        LocalDateTime createdAt
+        LocalDateTime addedAt
 ) {
-    public Equipment(String id, String status, LocalDateTime createdAt) {
+    public Equipment(String id, String status, LocalDateTime addedAt) {
         this.id = id;
         this.status = status;
-        this.createdAt = createdAt;
+        this.addedAt = addedAt;
     }
 }
