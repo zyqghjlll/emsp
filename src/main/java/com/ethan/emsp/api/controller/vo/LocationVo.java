@@ -1,5 +1,10 @@
 package com.ethan.emsp.api.controller.vo;
 
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
+@Builder
 public record LocationVo(
         String id,
         String name,
@@ -7,6 +12,8 @@ public record LocationVo(
         String latitude,
         String longitude,
         String openTime,
-        String closeTime
+        String closeTime,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

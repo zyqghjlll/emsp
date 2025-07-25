@@ -54,7 +54,7 @@ class LocationCmdApplicationTest {
         when(mockLocationDomainService.create(command)).thenReturn(location);
 
         // Run the test
-        final String result = locationCmdApplicationUnderTest.create(command);
+        final String result = locationCmdApplicationUnderTest.createLocation(command);
 
         // Verify the results
         assertThat(result).isEqualTo("location_id");
@@ -78,7 +78,7 @@ class LocationCmdApplicationTest {
         when(mockLocationRepository.getById(any(LocationId.class))).thenReturn(location);
 
         // Run the test
-        locationCmdApplicationUnderTest.update(command);
+        locationCmdApplicationUnderTest.updateLocation(command);
 
         // Verify the results
         verify(mockLocationRepository).update(any(Location.class));
@@ -93,6 +93,6 @@ class LocationCmdApplicationTest {
         when(mockLocationRepository.getById(any(LocationId.class))).thenReturn(null);
 
         // Run the test
-        assertThatThrownBy(() -> locationCmdApplicationUnderTest.update(command)).isInstanceOf(BusinessException.class);
+        assertThatThrownBy(() -> locationCmdApplicationUnderTest.updateLocation(command)).isInstanceOf(BusinessException.class);
     }
 }

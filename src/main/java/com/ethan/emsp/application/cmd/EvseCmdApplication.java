@@ -18,7 +18,7 @@ public class EvseCmdApplication {
     private final AppEventPublisher appEventPublisher;
 
     @Transactional
-    public String create(CreateEvseCmd command) {
+    public String createEvse(CreateEvseCmd command) {
         Evse evse = evseDomainService.create(command);
         if (evseCmdRepository.exists(evse.getId())) {
             throw new ConflictException("EVSE already exists: " + evse.getId());
@@ -31,7 +31,7 @@ public class EvseCmdApplication {
     }
 
     @Transactional
-    public void changeStatus(ChangeStatusCmd command) {
+    public void changeEvseStatus(ChangeStatusCmd command) {
         Evse evse = evseCmdRepository.getById(command.evseId());
         if (evse == null) {
             throw new NotFoundException("EVSE not found: " + command.evseId());
@@ -46,7 +46,7 @@ public class EvseCmdApplication {
     }
 
     @Transactional
-    public boolean addConnector(AddConnectorCmd command) {
+    public boolean addConnectorToEvse(AddConnectorCmd command) {
         Evse evse = evseCmdRepository.getById(command.evseId());
         if (evse == null) {
             throw new NotFoundException("EVSE not found: " + command.evseId());

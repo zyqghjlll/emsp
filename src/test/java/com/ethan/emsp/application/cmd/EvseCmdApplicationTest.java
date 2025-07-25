@@ -53,7 +53,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.exists(any(EvseId.class))).thenReturn(false);
 
         // Run the test
-        final String result = evseCmdApplicationUnderTest.create(command);
+        final String result = evseCmdApplicationUnderTest.createEvse(command);
 
         // Verify the results
         assertThat(result).isEqualTo("CN*ABC*123456");
@@ -73,7 +73,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.exists(any(EvseId.class))).thenReturn(true);
 
         // Run the test
-        assertThatThrownBy(() -> evseCmdApplicationUnderTest.create(command)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> evseCmdApplicationUnderTest.createEvse(command)).isInstanceOf(ConflictException.class);
     }
 
     @Test
@@ -86,7 +86,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        evseCmdApplicationUnderTest.changeStatus(command);
+        evseCmdApplicationUnderTest.changeEvseStatus(command);
 
         // Verify the results
         verify(mockEvseCmdRepository, never()).save(any(Evse.class));
@@ -103,7 +103,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        evseCmdApplicationUnderTest.changeStatus(command);
+        evseCmdApplicationUnderTest.changeEvseStatus(command);
 
         // Verify the results
         verify(mockEvseCmdRepository).update(any(Evse.class));
@@ -120,7 +120,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(evse);
 
         // Run the test
-        assertThatThrownBy(() -> evseCmdApplicationUnderTest.changeStatus(command)).isInstanceOf(ConflictException.class);
+        assertThatThrownBy(() -> evseCmdApplicationUnderTest.changeEvseStatus(command)).isInstanceOf(ConflictException.class);
 
         // Verify the results
         verify(mockEvseCmdRepository, times(0)).save(any(Evse.class));
@@ -139,7 +139,7 @@ class EvseCmdApplicationTest {
         when(mockEvseCmdRepository.getById(any(EvseId.class))).thenReturn(null);
 
         // Run the test
-        assertThatThrownBy(() -> evseCmdApplicationUnderTest.changeStatus(command))
+        assertThatThrownBy(() -> evseCmdApplicationUnderTest.changeEvseStatus(command))
                 .isInstanceOf(NotFoundException.class);
     }
 }

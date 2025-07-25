@@ -5,7 +5,6 @@ import com.ethan.emsp.api.controller.dto.LocationQueryDto;
 import com.ethan.emsp.api.controller.vo.ConnectorVo;
 import com.ethan.emsp.api.controller.vo.EvsePageVo;
 import com.ethan.emsp.api.controller.vo.LocationPageVo;
-import com.ethan.emsp.api.controller.vo.LocationVo;
 import com.ethan.emsp.infrastructure.persistence.event.po.ConnectorViewPO;
 import com.ethan.emsp.infrastructure.persistence.event.po.EvseViewPO;
 import com.ethan.emsp.infrastructure.persistence.event.po.LocationViewPO;
@@ -14,6 +13,7 @@ import com.ethan.emsp.infrastructure.persistence.query.common.PageResult;
 import com.ethan.emsp.infrastructure.persistence.query.mapper.ConnectorQueryMapper;
 import com.ethan.emsp.infrastructure.persistence.query.mapper.EvseQueryMapper;
 import com.ethan.emsp.infrastructure.persistence.query.mapper.LocationQueryMapper;
+import com.ethan.emsp.infrastructure.persistence.query.bo.LocationQueryBO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class LocationQueryRepositoryImpl implements LocationQueryRepository {
     private ConnectorQueryMapper connectorQueryMapper;
 
     @Override
-    public PageResult<LocationPageVo> queryByLastUpdated(LocationQueryDto queryDto) {
+    public PageResult<LocationPageVo> listLocations(LocationQueryDto queryDto) {
         // 1. 分页查主表
         PageHelper.startPage(queryDto.getPageNum(), queryDto.getPageSize());
         List<LocationViewPO> locationList = locationQueryMapper.selectByLastUpdated(queryDto);
@@ -96,7 +96,7 @@ public class LocationQueryRepositoryImpl implements LocationQueryRepository {
 
 
     @Override
-    public LocationVo findById(String locationId) {
-        return null;
+    public LocationQueryBO findById(String locationId) {
+        return locationQueryMapper.findById(locationId);
     }
 }

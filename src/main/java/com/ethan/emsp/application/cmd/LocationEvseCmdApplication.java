@@ -22,7 +22,7 @@ public class LocationEvseCmdApplication {
     private final AppEventPublisher appEventPublisher;
 
     @Transactional
-    public void addEvse(AddEvseToLocationCmd command) {
+    public void addEvseToLocation(AddEvseToLocationCmd command) {
         Location location = locationRepository.getById(command.locationId());
         if (location == null) {
             throw new NotFoundException("Location not found: " + command.locationId());

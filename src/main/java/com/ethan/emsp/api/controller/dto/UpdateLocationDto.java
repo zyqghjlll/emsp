@@ -9,15 +9,14 @@ import java.io.Serializable;
 
 @Data
 public class UpdateLocationDto implements Serializable {
-    private String id;
     private String name;
     private String address;
     private String openTime;
     private String closeTime;
 
-    public UpdateLocationCmd toCommand() {
+    public UpdateLocationCmd toCommand(String locationId) {
         return new UpdateLocationCmd(
-                LocationId.of(id),
+                LocationId.of(locationId),
                 name,
                 address,
                 BusinessHours.of(openTime, closeTime)

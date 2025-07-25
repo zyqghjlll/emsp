@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/health")
 public class HealthController {
-    @GetMapping("/beat")
-    public ResultMessage<String> beat() {
+    @GetMapping("/liveness")
+    public ResultMessage<String> liveness() {
         return ResultMessage.success("ok");
     }
 
-    @GetMapping("/ready")
-    public ResultMessage<String> ready() {
+    @GetMapping("/readiness")
+    public ResultMessage<String> readiness() {
         return ResultMessage.success("ok");
     }
 }

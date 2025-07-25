@@ -1,4 +1,4 @@
-package com.ethan.emsp.infrastructure.persistence.query.view;
+package com.ethan.emsp.infrastructure.persistence.query.bo;
 
 import lombok.Data;
 

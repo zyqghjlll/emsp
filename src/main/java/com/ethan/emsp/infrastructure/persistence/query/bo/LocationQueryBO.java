@@ -1,4 +1,4 @@
-package com.ethan.emsp.infrastructure.persistence.query.view;
+package com.ethan.emsp.infrastructure.persistence.query.bo;
 
 import lombok.Data;
 
@@ -13,5 +13,6 @@ public class LocationQueryBO {
     private Double longitude;
     private String openTime;
     private String closeTime;
-    private LocalDateTime lastUpdated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

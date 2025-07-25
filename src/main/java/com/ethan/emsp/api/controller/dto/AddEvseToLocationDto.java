@@ -9,10 +9,9 @@ import java.io.Serializable;
 
 @Data
 public class AddEvseToLocationDto implements Serializable {
-    private String locationId;
     private String evseId;
 
-    public AddEvseToLocationCmd toCommand() {
+    public AddEvseToLocationCmd toCommand(String locationId) {
         return new AddEvseToLocationCmd(
                 LocationId.of(locationId),
                 EvseId.of(evseId)

@@ -7,34 +7,31 @@ import com.ethan.emsp.application.cmd.LocationCmdApplication;
 import com.ethan.emsp.application.cmd.LocationEvseCmdApplication;
 import com.ethan.emsp.core.result.ResultMessage;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/location")
+@RequestMapping("/locations")
 @AllArgsConstructor
 public class LocationController {
 
     private final LocationCmdApplication locationCmdApplication;
     private final LocationEvseCmdApplication locationEvseCmdApplication;
 
-    @PostMapping("/create")
-    public ResultMessage<String> create(@RequestBody CreateLocationDto dto) {
-        String id = locationCmdApplication.create(dto.toCommand());
+    @PostMapping
+    public ResultMessage<String> createLocation(@RequestBody CreateLocationDto dto) {
+        String id = locationCmdApplication.createLocation(dto.toCommand());
         return ResultMessage.success(id);
     }
 
-    @PostMapping("/update")
-    public ResultMessage<Void> update(@RequestBody UpdateLocationDto dto) {
-        locationCmdApplication.update(dto.toCommand());
+    @PatchMapping("/{locationId}")
+    public ResultMessage<Void> updateLocation(@PathVariable String locationId, @RequestBody UpdateLocationDto dto) {
+        locationCmdApplication.updateLocation(dto.toCommand(locationId));
         return ResultMessage.success();
     }
 
-    @PostMapping("/addEvse")
-    public ResultMessage<Boolean> addEvse(@RequestBody AddEvseToLocationDto dto) {
-        locationEvseCmdApplication.addEvse(dto.toCommand());
+    @PostMapping("/{locationId}/evses")
+    public ResultMessage<Boolean> addEvseToLocation(@PathVariable String locationId, @RequestBody AddEvseToLocationDto dto) {
+        locationEvseCmdApplication.addEvseToLocation(dto.toCommand(locationId));
         return ResultMessage.success(true);
     }
 }

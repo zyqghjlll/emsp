@@ -10,15 +10,13 @@ import java.io.Serializable;
 
 @Data
 public class AddConnectorDto implements Serializable {
-    @NotBlank(message = "EVSE ID cannot be blank")
-    private String evseId;
     private String type;
     private int voltage;
     private int amperage;
     private double power;
     private String standard;
 
-    public AddConnectorCmd toCommand() {
+    public AddConnectorCmd toCommand(String evseId) {
         return new AddConnectorCmd(
                 EvseId.of(evseId),
                 new Connector(type, voltage, amperage, power, standard)

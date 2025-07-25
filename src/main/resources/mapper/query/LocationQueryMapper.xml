@@ -18,4 +18,9 @@
         </where>
         order by updated_at desc
     </select>
+    <select id="findById" resultType="com.ethan.emsp.infrastructure.persistence.query.bo.LocationQueryBO">
+        SELECT *
+        FROM db_location_view
+        WHERE location_id = #{locationId}
+    </select>
 </mapper>

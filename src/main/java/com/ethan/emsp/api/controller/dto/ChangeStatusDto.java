@@ -10,12 +10,10 @@ import java.io.Serializable;
 
 @Data
 public class ChangeStatusDto implements Serializable {
-    @NotBlank(message = "EVSE ID cannot be blank")
-    private String evseId;
     @NotBlank(message = "EVSE status cannot be blank")
     private String newStatus;
 
-    public ChangeStatusCmd toCommand() {
+    public ChangeStatusCmd toCommand(String evseId) {
         return new ChangeStatusCmd(
                 EvseId.of(evseId),
                 EvseStatus.fromCode(newStatus)

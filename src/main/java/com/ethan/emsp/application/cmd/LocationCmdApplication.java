@@ -20,7 +20,7 @@ public class LocationCmdApplication {
     private final AppEventPublisher appEventPublisher;
 
     @Transactional
-    public String create(CreateLocationCmd command) {
+    public String createLocation(CreateLocationCmd command) {
         Location location = locationDomainService.create(command);
         locationRepository.save(location);
 
@@ -30,7 +30,7 @@ public class LocationCmdApplication {
     }
 
     @Transactional
-    public void update(UpdateLocationCmd command) {
+    public void updateLocation(UpdateLocationCmd command) {
         Location location = locationRepository.getById(command.id());
         if (location == null) {
             throw new BusinessException(ResultCode.NOT_FOUND, "Location not found: " + command.name());
