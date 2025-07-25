@@ -1,3 +1,6 @@
+ARG VERSION=dev
+ENV BUILD_VERSION=$VERSION
+
 # 使用 Amazon Corretto 17 作为基础镜像
 FROM amazoncorretto:17-alpine
 
