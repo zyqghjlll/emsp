@@ -1,17 +1,18 @@
-# 使用 Amazon Corretto 17 作为基础镜像
+# 使用官方 JDK 镜像
 FROM amazoncorretto:17-alpine
 
+# 构建参数
 ARG VERSION=dev
-ENV BUILD_VERSION=$VERSION
+ENV VERSION=${VERSION}
 
-# 设置工作目录
+# 构建时写入 version 到额外配置文件中
+RUN echo "version=${VERSION}" > /app-version.properties
+
+# 工作目录
 WORKDIR /app
 
-# 拷贝构建后的 jar 包到容器中
+# 复制 jar 包
 COPY target/emsp-0.0.1-SNAPSHOT.jar app.jar
 
-# 开放 HTTP 端口
-EXPOSE 80
-
-# 启动命令
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 启动时加载 application.properties + /app-version.properties
+ENTRYPOINT ["java", "-Dspring.config.additional-location=classpath:/,file:/app-version.properties", "-jar", "app.jar"]
