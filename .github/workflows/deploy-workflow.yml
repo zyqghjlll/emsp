@@ -15,6 +15,10 @@ jobs:
       AWS_DB_PASSWORD: ${{ secrets.AWS_DB_PASSWORD }}
 
     steps:
+      - name: 🕒 Set Image Version (Tag)
+        id: set-version
+        run: echo "VERSION=$(date +%Y%m%d-%H%M%S)" >> "$GITHUB_ENV"
+
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
@@ -29,10 +33,6 @@ jobs:
 
       - name: 🔨 Build JAR with Maven
         run: mvn clean package
-
-      - name: 🕒 Set Image Version (Tag)
-        id: set-version
-        run: echo "VERSION=$(date +%Y%m%d-%H%M%S)" >> "$GITHUB_ENV"
 
       - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
