@@ -17,7 +17,7 @@ public class EvseId {
     private static final Pattern PATTERN = Pattern.compile("^[A-Z]{2}\\*[A-Z0-9]{3}\\*\\w{1,30}$");
 
     public EvseId(String value) {
-        if (!PATTERN.matcher(value).matches()) {
+        if (value == null || !PATTERN.matcher(value).matches()) {
             throw new InvalidArgumentException("Invalid Evse ID format: " + value + ", expect: US*ABC*EVSE123456");
         }
         String[] parts = value.split("\\*");

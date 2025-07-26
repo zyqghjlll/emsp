@@ -1,5 +1,7 @@
 package com.ethan.emsp.domain.model.location;
 
+import java.util.Objects;
+
 public final class LocationId {
     private final String value;
 
@@ -26,6 +28,19 @@ public final class LocationId {
 
     public boolean isEmpty() {
         return this == EMPTY;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocationId that = (LocationId) o;
+        return Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
 

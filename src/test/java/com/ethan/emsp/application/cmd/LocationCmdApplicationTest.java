@@ -10,9 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,7 +48,7 @@ class LocationCmdApplicationTest {
                 .address("address")
                 .coordinate(new Coordinate(0.0, 0.0))
                 .businessHours(new BusinessHours(LocalTime.of(0, 0, 0), LocalTime.of(0, 0, 0)))
-                .build(), List.of(new Equipment("id", "status", LocalDateTime.of(2020, 1, 1, 0, 0, 0))));
+                .build());
         when(mockLocationDomainService.create(command)).thenReturn(location);
 
         // Run the test
@@ -74,7 +72,7 @@ class LocationCmdApplicationTest {
                 .address("address")
                 .coordinate(new Coordinate(0.0, 0.0))
                 .businessHours(new BusinessHours(LocalTime.of(0, 0, 0), LocalTime.of(0, 0, 0)))
-                .build(), List.of(new Equipment("id", "status", LocalDateTime.of(2020, 1, 1, 0, 0, 0))));
+                .build());
         when(mockLocationRepository.getById(any(LocationId.class))).thenReturn(location);
 
         // Run the test
