@@ -10,12 +10,10 @@ public record BusinessHours(LocalTime openTime, LocalTime closeTime) {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-    public BusinessHours(LocalTime openTime, LocalTime closeTime) {
+    public BusinessHours {
         if (openTime.isAfter(closeTime)) {
             throw new InvalidArgumentException("Opening time must be before or equal to closing time");
         }
-        this.openTime = openTime;
-        this.closeTime = closeTime;
     }
 
     public static BusinessHours of(String openTimeStr, String closeTimeStr) {

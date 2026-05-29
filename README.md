@@ -1,130 +1,138 @@
-# 工作计划：
+# emsp — eMobility Service Provider Backend
 
-第一周目标：完成最小可运行架构（DDD骨架 + 心跳接口 + 本地运行 + Docker化 + GitHub提交）。
+> A Java backend for managing EV charging infrastructure — built with Domain-Driven Design, an event-driven architecture, and a rigorously modeled state machine.
 
-第二周：建模 Location / Evse / Connector，设计事件机制，完成部分核心 API。
+emsp manages the core entities of an electric-vehicle charging network — **Locations**, **EVSEs** (charging units), and **Connectors** — and the rules that govern how they change over time. It is built as a clean, layered DDD application with explicit aggregates, domain events, and a self-validating state machine.
 
-第三周：接入数据校验、状态机、事件发布机制，编写单测，准备 Azure/AWS 部署。
+---
 
-第四周：部署上线，补充集成测试、CI 流水线、IaC（如有余力）。
+## What it does
 
-# 详细设计
+- Create and update charging **Locations**
+- Register **EVSEs** under a Location, with a validated EVSE ID format (`<CountryCode>*<PartyID>*<LocalEvseID>`, e.g. `US*ABC*EVSE123456`)
+- Transition EVSE **status** according to strict state-machine rules
+- Add **Connectors** (with standard, voltage, power) to an EVSE
+- Paginated queries of Locations and their EVSEs by `last_updated`
+- Publish **domain events** when Locations or EVSEs change
 
-## 项目包结构
+---
 
- ```
-emsp
-├── api                          # 提供外部 API 接口层（REST/MQ）
-│   ├── controller               # HTTP 接口控制器
-│   │   ├── dto                  # 接收参数对象（Data Transfer Object）
-│   │   └── vo                   # 返回结果对象（View Object）
-│   └── mq                       # 消息消费监听器（Kafka 等）
-├── application                  # 应用层，处理业务用例和指令封装
-│   ├── cmd                      # 写操作命令（Command）
-│   └── query                    # 读操作查询（Query）
-├── core                         # 核心通用模块
-│   ├── ddd                      # DDD 通用接口与注解（Entity, AggregateRoot 等）
-│   └── result
-│       └── exception            # 通用异常结构定义
-├── domain                       # 领域层，包含业务模型和领域事件
-│   ├── event                    # 领域事件定义
-│   └── model
-│       ├── evse                 # 充电终端 EVSE 相关领域模型
-│       └── location             # 地点 Location 相关领域模型
-├── infrastructure              # 基础设施层，提供技术实现与适配支持
-│   ├── assembler                # DTO/VO 与 DO 的装配器
-│   ├── common                   # 通用工具、常量等
-│   ├── config                   # 项目配置类（如 SpringConfig）
-│   ├── event                    # 事件总线实现（如 Kafka 发布）
-│   │   ├── assembler            # 事件消息的转换
-│   │   └── repository           # 事件持久化适配
-│   ├── persistence              # 数据持久化层（DB）
-│   │   ├── domain               # 领域对象的存储
-│   │   │   ├── mapper           # MyBatis Mapper 接口
-│   │   │   ├── po               # 数据库映射实体（Persistent Object）
-│   │   │   └── repository       # 持久化仓储实现
-│   │   ├── event                # 事件对象的存储
-│   │   │   ├── mapper
-│   │   │   ├── po
-│   │   │   └── repository
-│   │   └── query                # 视图查询（读模型）
-│   │       ├── common
-│   │       ├── mapper
-│   │       ├── repository
-│   │       └── view
-│   └── utils
-│       └── Impl                 # 工具实现类
-└── integration                 # 第三方系统集成适配层
-    ├── api                      # 外部系统 API 调用
-    ├── event                    # 外部事件监听与处理
-    └── messaging                # 消息协议封装
+## Architecture
 
- ```
-
-## 推荐工具 & 依赖初始化
-
-- Java 17 或以上
-- Spring Boot 3.x
-- Maven
-- MyBatis-Plus（做数据落库）
-- MapStruct（实体转换）
-- Validation（如 Hibernate Validator）
-- Lombok
-- Docker
-- GitHub Actions（CICD）
-
-## 交付要求
-
-Java + RESTful + DDD + EDD + RDBMS + CI/CD + 云部署
-
-| 编号 | 要求                             |
-|----|--------------------------------|
-| 1  | 使用 **DDD（领域驱动设计）**             |
-| 2  | 使用 **事件驱动设计（EDD）**             |
-| 3  | 编写完整 API + 单元测试，代码上传 GitHub    |
-| 4  | 配置 **CI 管道（推荐 GitHub Action）** |
-| 5  | **部署至 Azure 与 AWS（free tier）** |
-| 6  | 数据验证 & 错误响应设计（如 400、409）       |
-| 7  | 提供 `Dockerfile`                |
-| 8  | 使用 RDBMS 并设计数据结构               |
-| 9  | **语言要求：Java**                  |
-
-## 关键实体
-
-Location：充电站点，包括名称、地址、坐标、营业时间等。
-
-Evse：一个充电设备单元，属于某个 Location，带有状态。
-
-状态：AVAILABLE, BLOCKED, INOPERATIVE, REMOVED
-
-- [数据库设计](docs/DB-DESIGN.md)
-
-### 状态转移规则：
-
-INITIAL → AVAILABLE
-
-AVAILABLE ↔ BLOCKED
-
-AVAILABLE ↔ INOPERATIVE
-
-ANY → REMOVED（不可逆）
-
-Evse ID 格式：
+emsp follows Domain-Driven Design with a strict separation between the domain core and infrastructure. The dependency direction always points inward toward the domain.
 
 ```
-<CountryCode>*<PartyID>*<LocalEvseID>（如：US*ABC*Evse123456）
+com.ethan.emsp
+├── api                  # Inbound adapters — REST controllers, DTOs, VOs
+│   └── controller       # Evse / Location / LocationQuery / Health
+├── application          # Use-case orchestration
+│   ├── cmd              # Write side (Commands)
+│   └── query            # Read side (Queries)
+├── domain               # The core — pure business logic, no framework deps
+│   ├── model
+│   │   ├── evse         # Evse aggregate, EvseStatus state machine, Connector
+│   │   └── location     # Location aggregate
+│   └── event            # Domain events (EvseChanged, LocationChanged, ...)
+├── core                 # DDD building blocks
+│   └── ddd              # AggregateRoot, Entity, ValueObject, DomainEvent, ...
+└── infrastructure       # Outbound adapters — persistence, event publishing
+    ├── persistence      # MyBatis-Plus: domain / event / query repositories
+    ├── event            # Event persistence & publishing
+    ├── monitor          # Health / monitoring
+    └── config           # Spring configuration
 ```
 
-Connector：Evse 下的具体充电接口，包含标准、电压、功率等参数。
+### Design highlights
 
-## 需要实现的接口（RESTful API）
+**Explicit DDD building blocks**
+The `core.ddd` package defines first-class abstractions — `AggregateRoot`, `Entity`, `ValueObject`, `DomainEvent`, `Command`, `AppEventPublisher` — so the domain model expresses intent rather than leaking persistence concerns.
 
-创建、更新 Location
+**Aggregates protect their invariants**
+`Evse` is an aggregate root. State changes go through behavior (`changeStatus`, `addConnector`) rather than setters, and illegal operations are rejected at the domain boundary.
 
-添加 Evse 到指定 Location（校验 Evse ID 格式）
+**A self-validating state machine**
+`EvseStatus` encodes the legal transitions explicitly:
 
-Evse 状态变更（需遵循状态机）
+```
+INITIAL      → AVAILABLE, REMOVED
+AVAILABLE    ↔ BLOCKED
+AVAILABLE    ↔ INOPERATIVE
+INOPERATIVE  → INITIAL, AVAILABLE
+ANY          → REMOVED   (terminal, irreversible)
+```
 
-添加 Connector 到 Evse
+Any attempt to make an invalid transition throws a `ConflictException`. The enum even ships a `selfValidate()` method that asserts the transition table matches the intended business rules — the model checks its own correctness.
 
-根据 last_updated 分页查询 Location 和其 Evse
+**CQRS-style read/write separation**
+The application layer splits write operations (`cmd`) from reads (`query`), with separate persistence paths (domain repositories vs. query/read models), keeping the write model clean and the read side optimized for queries.
+
+**Event-driven design**
+Domain changes raise events (`EvseChangedEvent`, `LocationChangedEvent`, `LocationEvseChangedEvent`) that are persisted and published, enabling downstream consumers to react to state changes.
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+| --- | --- |
+| Runtime | Java, Spring Boot |
+| Web | Spring Boot Web + Validation |
+| Persistence | MyBatis-Plus, PageHelper, PostgreSQL |
+| Architecture | DDD + Event-Driven + CQRS-style read/write split |
+| Utilities | Hutool, Lombok |
+| Testing | JUnit 5 |
+| CI/CD | GitHub Actions |
+
+See [`docs/DB-DESIGN.md`](docs/DB-DESIGN.md) for the database schema.
+
+---
+
+## Domain model
+
+**Location** — a charging site (name, address, coordinates, opening hours).
+
+**EVSE** — a charging unit belonging to a Location, identified by a structured ID and governed by the status state machine above.
+
+**Connector** — a physical interface on an EVSE (standard, voltage, power).
+
+---
+
+## REST API
+
+- Create / update a **Location**
+- Add an **EVSE** to a Location (validates EVSE ID format)
+- Change **EVSE status** (enforced by the state machine)
+- Add a **Connector** to an EVSE
+- Paginated query of Locations and their EVSEs by `last_updated`
+- Health endpoint
+
+---
+
+## Getting started
+
+### Prerequisites
+
+- Java 17+
+- Maven 3.8+
+- PostgreSQL
+
+### Build & run
+
+```bash
+mvn -q -DskipTests clean package
+java -jar target/emsp-*.jar
+```
+
+The project includes a GitHub Actions workflow (`.github/workflows/deploy-workflow.yml`) and was designed for deployment to cloud free tiers (AWS / Azure).
+
+---
+
+## Engineering notes
+
+This project was built to practice production-grade backend design end to end: modeling a non-trivial domain with DDD, enforcing invariants through a state machine, separating reads from writes, and wiring up events, validation (with meaningful HTTP responses such as 400 / 409), CI, and a Dockerized deployment.
+
+---
+
+## License
+
+Released under the MIT License.
